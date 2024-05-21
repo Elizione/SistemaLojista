@@ -1,0 +1,120 @@
+﻿@model IPagedList<Sistema_de_lojista.Models.Cliente>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+@{
+    ViewData["Title"] = "Filtro";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Clientes</h2>
+
+<p>
+    Consulte os seus Clientes cadastrados na
+    sua Loja ou realize o cadastro de novos Clientes
+</p>
+
+<div class="d-flex justify-content-end mb-2">
+    <a class="btn btn-primary" asp-action="Create">Adicionar Cliente</a>
+    <button class="btn btn-secondary ml-2" id="showFilter">Filtrar</button>
+</div>
+
+<div id="filterArea" class="mb-3" style="display:none;">
+    <form method="get" asp-action="Index" id="filterForm">
+        <input type="hidden" id="FiltroAtivo" name="FiltroAtivo" value="false" />
+        <div class="form-row">
+            <div class="form-group col-md-3">
+                <label for="NomeRazaoSocial">Nome/Razão Social</label>
+                <input type="text" class="form-control" id="NomeRazaoSocial" name="NomeRazaoSocial" placeholder="Nome ou Razão Social do Cliente">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="Email">E-mail</label>
+                <input type="email" class="form-control" id="Email" name="Email" placeholder="E-mail do Cliente">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="Telefone">Telefone</label>
+                <input type="text" class="form-control" id="Telefone" name="Telefone" placeholder="Telefone do Cliente">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="DataCadastro">Data de Cadastro</label>
+                <input type="date" class="form-control" id="DataCadastro" name="DataCadastro" placeholder="Selecione uma data ou período">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="ClienteBloqueado">Cliente bloqueado</label>
+                <select class="form-control" id="ClienteBloqueado" name="ClienteBloqueado">
+                    <option value="">Selecione</option>
+                    <option value="SIM">SIM</option>
+                    <option value="NAO">NÃO</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Aplicar filtros</button>
+            <button type="button" class="btn btn-secondary" id="clearFilters">Limpar filtros</button>
+        </div>
+    </form>
+</div>
+
+<button type="button" class="btn btn-secondary" id="deleteFilter">Deletar filtro</button>
+
+<div id="clientesContainer">
+    @Html.Partial("_ClientesTable", Model)
+</div>
+
+@section Scripts {
+    <script>
+
+        const limpaCamposFiltro = () => {
+            document.getElementById('NomeRazaoSocial').value = '';
+            document.getElementById('Email').value = '';
+            document.getElementById('Telefone').value = '';
+            document.getElementById('DataCadastro').value = '';
+            document.getElementById('ClienteBloqueado').selectedIndex = 0;
+        }
+
+        const mostrarFiltro = () => {
+            var filterArea = document.getElementById('filterArea');
+            if (filterArea.style.display === 'none' || filterArea.style.display === '') {
+                filterArea.style.display = 'block';
+            } else {
+                filterArea.style.display = 'none';
+            }
+        }
+
+        const delecaoDeFiltro = () => {
+            limpaCamposFiltro();
+            $.ajax({
+                url: '@Url.Action("ClearFilter")',
+                type: 'GET',
+                success: function (result) {
+                    $('#clientesContainer').html(result);
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+            mostrarFiltro();
+        }
+
+        const toggleDeleteFilterButton = () => {
+            var filtroAtivo = document.getElementById('FiltroAtivo').value;
+            var deleteFilterButton = document.getElementById('deleteFilter');
+            if (filtroAtivo === 'true') {
+                deleteFilterButton.style.display = 'block';
+            } else {
+                deleteFilterButton.style.display = 'none';
+            }
+        }
+
+        document.getElementById('selectAll').onclick = function () {
+            var checkboxes = document.getElementsByName('selectedClientes');
+            for (var checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        };
+
+        document.getElementById('showFilter').onclick = mostrarFiltro;
+        document.getElementById('clearFilters').onclick = limpaCamposFiltro;
+        document.getElementById('deleteFilter').onclick = delecaoDeFiltro;
+    </script>
+}

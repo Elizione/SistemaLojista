@@ -1,0 +1,37 @@
+﻿@model IPagedList<Sistema_de_lojista.Models.Cliente>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+
+<table class="table table-bordered" id="clientesTable">
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="selectAll" /></th>
+            <th>Nome/Razão Social</th>
+            <th>E-mail</th>
+            <th>Telefone</th>
+            <th>Data de Cadastro</th>
+            <th>Bloqueado</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input type="checkbox" name="selectedClientes" value="@item.Id" /></td>
+                <td>@item.NomeRazaoSocial</td>
+                <td>@item.Email</td>
+                <td>@item.Telefone</td>
+                <td>@item.DataCadastro.ToString("dd/MM/yyyy")</td>
+                <td><input type="checkbox" disabled @(item.Bloqueado ? "checked" : "") /></td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-warning">Editar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page }), PagedListRenderOptions.Classic)
+</div>

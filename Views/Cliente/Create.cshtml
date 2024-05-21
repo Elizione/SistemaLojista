@@ -1,0 +1,139 @@
+﻿@model Sistema_de_lojista.Models.Cliente
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Create</h1>
+
+<h4>Cliente</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="NomeRazaoSocial" class="control-label"></label>
+                <input asp-for="NomeRazaoSocial" class="form-control" />
+                <span asp-validation-for="NomeRazaoSocial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telefone" class="control-label"></label>
+                <input asp-for="Telefone" class="form-control" id="Telefone" />
+                <span asp-validation-for="Telefone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label>Data de Cadastro:</label>
+                <input type="text" class="form-control" value="@DateTime.Now.ToString("dd/MM/yyyy")" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="TipoPessoa" class="control-label"></label>
+                <select asp-for="TipoPessoa" class="form-control">
+                    <option value="Física">Física</option>
+                    <option value="Jurídica">Jurídica</option>
+                </select>
+                <span asp-validation-for="TipoPessoa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CPFCNPJ" class="control-label"></label>
+                <input asp-for="CPFCNPJ" class="form-control" id="CPFCNPJ" />
+                <span asp-validation-for="CPFCNPJ" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InscricaoEstadual" class="control-label"></label>
+                <input asp-for="InscricaoEstadual" class="form-control" id="InscricaoEstadual" />
+                <span asp-validation-for="InscricaoEstadual" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Isento" id="Isento" /> @Html.DisplayNameFor(model => model.Isento)
+                </label>
+            </div>
+            <div class="form-group" id="GeneroContainer">
+                <label asp-for="Genero" class="control-label"></label>
+                <select asp-for="Genero" class="form-control">
+                    <option value="Feminino">Feminino</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Outro">Outro</option>
+                </select>
+                <span asp-validation-for="Genero" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="DataNascimentoContainer">
+                <label asp-for="DataNascimento" class="control-label"></label>
+                <input asp-for="DataNascimento" class="form-control" />
+                <span asp-validation-for="DataNascimento" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Bloqueado" /> @Html.DisplayNameFor(model => model.Bloqueado)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Senha" class="control-label"></label>
+                <input type="password" asp-for="Senha" class="form-control" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmacaoSenha" class="control-label"></label>
+                <input type="password" asp-for="ConfirmacaoSenha" class="form-control" />
+                <span asp-validation-for="ConfirmacaoSenha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Cadastrar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar para Lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+       
+    </script>
+
+    @* <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form');
+            form.addEventListener('submit', function () {
+                var formData = {};
+                var formElements = form.elements;
+                for (var i = 0; i < formElements.length; i++) {
+                    var element = formElements[i];
+                    if (element.name) {
+                        formData[element.name] = element.value;
+                    }
+                }
+                localStorage.setItem('formData', JSON.stringify(formData));
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.querySelector('form');
+            var formData = JSON.parse(localStorage.getItem('formData'));
+            if (formData) {
+                form.NomeRazaoSocial.value = formData.NomeRazaoSocial;
+                form.Email.value = formData.Email;
+                form.Telefone.value = formData.Telefone;
+                form.DataCadastro.value = formData.DataCadastro;
+                form.TipoPessoa.value = formData.TipoPessoa;
+                form.CPFCNPJ.value = formData.CPFCNPJ;
+                form.InscricaoEstadual.value = formData.InscricaoEstadual;
+                form.Isento.checked = formData.Isento;
+                form.Genero.value = formData.Genero;
+                form.DataNascimento.value = formData.DataNascimento;
+                form.Bloqueado.checked = formData.Bloqueado;
+                form.Senha.value = formData.Senha;
+                form.ConfirmacaoSenha.value = formData.ConfirmacaoSenha;
+            }
+        });
+    </script> *@
+}
